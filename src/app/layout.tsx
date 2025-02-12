@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "floguo × hologram",
+  title: "hologram",
   description: "incoming at vercel design",
 };
 

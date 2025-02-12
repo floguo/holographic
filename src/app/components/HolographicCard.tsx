@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Logo from './Logo';
 import StatueOfLiberty from './StatueOfLiberty';
+import { getNotes } from '../utils/notes';
 
 interface WindowWithDeviceOrientation extends Window {
   DeviceOrientationEvent: {
@@ -10,7 +11,11 @@ interface WindowWithDeviceOrientation extends Window {
   };
 }
 
-const HolographicCard = () => {
+interface HolographicCardProps {
+  person: string;
+}
+
+const HolographicCard = ({ person }: HolographicCardProps) => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
   const [hypotenuse, setHypotenuse] = useState(0);
@@ -144,6 +149,9 @@ const HolographicCard = () => {
       }
     };
   }, [hasGyroscope, handleDeviceOrientation]);
+
+  // Load person-specific content
+  const notes = getNotes(person);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-black p-8 relative">
@@ -447,6 +455,12 @@ const HolographicCard = () => {
       >
         X.COM/FLOGUO
       </a>
+
+      {/* Add notes content to card */}
+      <div className="absolute inset-0 p-6 text-white">
+        <h2 className="text-xl uppercasefont-bold">For {person}</h2>
+        {notes}
+      </div>
 
       <style jsx global>{`
         @keyframes rgb-shift {
