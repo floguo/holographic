@@ -72,7 +72,7 @@ const HolographicCard = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-screen bg-black p-8">
+    <div className="flex flex-col items-center justify-center w-full h-screen bg-black p-8 relative">
       <div className="w-64 h-96" style={{ perspective: '1500px' }}>
         <div 
           className="relative w-full h-full rounded-xl cursor-pointer"
@@ -230,9 +230,11 @@ const HolographicCard = () => {
 
               {/* Date at bottom */}
               <div className="absolute bottom-4 inset-x-4">
-                <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.5rem]">
-                  Summer 2025
-                </span>
+                <div className="flex flex-row justify-between items-center">
+                  <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.5rem]">
+                    Summer 2025
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -300,6 +302,17 @@ const HolographicCard = () => {
           </div>
         </div>
       </div>
+
+      {/* X link - sticky footer */}
+      <a 
+        href="https://x.com/floguo" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="fixed bottom-4 text-white opacity-30 font-mono font-semibold uppercase tracking-wider text-[0.5rem] hover:opacity-100 transition-opacity"
+      >
+        X.COM/FLOGUO
+      </a>
+
       <style jsx global>{`
         @keyframes rgb-shift {
           0% {
