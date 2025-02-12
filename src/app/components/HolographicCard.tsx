@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Logo from './Logo';
+import StatueOfLiberty from './StatueOfLiberty';
 
 const HolographicCard = () => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
@@ -191,27 +192,47 @@ const HolographicCard = () => {
             />
 
             {/* Content */}
-            <div className="relative h-full p-6 text-white">
-              <div className="flex flex-col gap-2">
-                <h2 className="text-5xl bg-gradient-to-r from-white to-gray-600 bg-clip-text text-transparent tracking-tight leading-normal">
-                  {/* unkerned heading for comparison*/}
-                  {/* <span>floguo</span> */}
-                  <span style={{ letterSpacing: '-0.05em' }}>f</span>
-                  <span style={{ letterSpacing: '-0.04em' }}>l</span>
-                  <span style={{ letterSpacing: '-0.02em' }}>o</span>
-                  <span style={{ letterSpacing: '-0.08em' }}>g</span>
-                  <span style={{ letterSpacing: '-0.05em' }}>u</span>
-                  <span style={{ letterSpacing: '-0.03em' }}>o</span>
-                </h2>
-                <p className="font-mono uppercase tracking-wider text-[0.5rem]">
-                  Design Engineering Intern
-                </p>
-              </div>             
-              <div 
-                className="absolute bottom-4 inset-x-6 flex flex-row justify-between"
-              >
-                 <span className="text-white font-mono uppercase tracking-wider text-[0.5rem]">Summer 2025</span>
-                 <Logo />
+            <div className="relative h-full p-4 text-white overflow-hidden">
+              {/* Date and Logo at top */}
+              <div className="flex flex-row justify-between">
+                <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.5rem] pt-[0.1rem]">INTERNSHIP</span>
+                <Logo />
+              </div>
+
+              {/* Statue of Liberty */}
+              <div className="absolute -bottom-20 -right-4">
+                <StatueOfLiberty 
+                  className="text-white h-[26rem] mix-blend-soft-light opacity-30" 
+                  style={{
+                    filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))',
+                  }}
+                />
+              </div>    
+
+              {/* Name and title at bottom */}
+              <div className="absolute bottom-6 inset-x-4">
+                <div className="flex flex-col my-16">
+                  <h2 className="text-4xl bg-gradient-to-r from-white to-gray-600 bg-clip-text text-transparent tracking-tight leading-normal">
+                    {/* unkerned heading for comparison*/}
+                    {/* <span>floguo</span> */}
+                    <span style={{ letterSpacing: '-0.05em' }}>f</span>
+                    <span style={{ letterSpacing: '-0.04em' }}>l</span>
+                    <span style={{ letterSpacing: '-0.02em' }}>o</span>
+                    <span style={{ letterSpacing: '-0.08em' }}>g</span>
+                    <span style={{ letterSpacing: '-0.05em' }}>u</span>
+                    <span style={{ letterSpacing: '-0.03em' }}>o</span>
+                  </h2>
+                  <p className="font-mono font-semibold uppercase tracking-wider text-[0.5rem]">
+                    Design Engineering
+                  </p>
+                </div>
+              </div>
+
+              {/* Date at bottom */}
+              <div className="absolute bottom-4 inset-x-4">
+                <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.5rem]">
+                  Summer 2025
+                </span>
               </div>
             </div>
           </div>
