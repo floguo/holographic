@@ -73,7 +73,7 @@ const HolographicCard = () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-black p-8 relative">
-      <div className="w-64 h-96" style={{ perspective: '1500px' }}>
+      <div className="w-80 h-[30rem]" style={{ perspective: '1500px' }}>
         <div 
           className="relative w-full h-full rounded-xl cursor-pointer"
           onClick={handleClick}
@@ -192,27 +192,27 @@ const HolographicCard = () => {
             />
 
             {/* Content */}
-            <div className="relative h-full p-4 text-white overflow-hidden">
+            <div className="relative h-full p-5 text-white overflow-hidden">
               {/* Date and Logo at top */}
               <div className="flex flex-row justify-between">
-                <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.5rem] pt-[0.1rem]">INTERNSHIP</span>
+                <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.625rem] pt-[0.125rem]">INTERNSHIP</span>
                 <Logo />
               </div>
 
               {/* Statue of Liberty */}
-              <div className="absolute -bottom-20 -right-4">
+              <div className="absolute -bottom-24 -right-5">
                 <StatueOfLiberty 
-                  className="text-white h-[26rem] mix-blend-soft-light opacity-30" 
+                  className="text-white h-[36rem] mix-blend-soft-light opacity-30 animate-[pulse_4s_ease-in-out_infinite]" 
                   style={{
-                    filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.3))',
+                    filter: 'drop-shadow(0 0 12px rgba(255,255,255,0.3))',
                   }}
                 />
               </div>    
 
               {/* Name and title at bottom */}
-              <div className="absolute bottom-6 inset-x-4">
-                <div className="flex flex-col my-16">
-                  <h2 className="text-4xl bg-gradient-to-r from-white to-gray-600 bg-clip-text text-transparent tracking-tight leading-normal">
+              <div className="absolute bottom-8 inset-x-5">
+                <div className="flex flex-col my-20">
+                  <h2 className="text-5xl bg-gradient-to-r from-white to-gray-600 bg-clip-text text-transparent tracking-tight leading-normal">
                     {/* unkerned heading for comparison*/}
                     {/* <span>floguo</span> */}
                     <span style={{ letterSpacing: '-0.05em' }}>f</span>
@@ -222,16 +222,16 @@ const HolographicCard = () => {
                     <span style={{ letterSpacing: '-0.05em' }}>u</span>
                     <span style={{ letterSpacing: '-0.03em' }}>o</span>
                   </h2>
-                  <p className="font-mono font-semibold uppercase tracking-wider text-[0.5rem]">
+                  <p className="font-mono font-semibold uppercase tracking-wider text-[0.625rem]">
                     Design Engineering
                   </p>
                 </div>
               </div>
 
               {/* Date at bottom */}
-              <div className="absolute bottom-4 inset-x-4">
+              <div className="absolute bottom-5 inset-x-5">
                 <div className="flex flex-row justify-between items-center">
-                  <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.5rem]">
+                  <span className="text-white font-mono font-semibold uppercase tracking-wider text-[0.625rem]">
                     Summer 2025
                   </span>
                 </div>
@@ -308,7 +308,7 @@ const HolographicCard = () => {
         href="https://x.com/floguo" 
         target="_blank" 
         rel="noopener noreferrer"
-        className="fixed bottom-4 text-white opacity-30 font-mono font-semibold uppercase tracking-wider text-[0.5rem] hover:opacity-100 transition-opacity"
+        className="fixed bottom-4 text-white opacity-30 font-mono font-semibold uppercase tracking-wider text-[0.5rem] hover:opacity-50 transition-opacity duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
       >
         X.COM/FLOGUO
       </a>
