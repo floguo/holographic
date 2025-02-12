@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Logo from './Logo';
 import StatueOfLiberty from './StatueOfLiberty';
-import { getNotes } from '../utils/notes';
 
 interface WindowWithDeviceOrientation extends Window {
   DeviceOrientationEvent: {
@@ -11,11 +10,7 @@ interface WindowWithDeviceOrientation extends Window {
   };
 }
 
-interface HolographicCardProps {
-  person: string;
-}
-
-const HolographicCard = ({ person }: HolographicCardProps) => {
+const HolographicCard = () => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
   const [hypotenuse, setHypotenuse] = useState(0);
@@ -26,8 +21,6 @@ const HolographicCard = ({ person }: HolographicCardProps) => {
   const [hasGyroscope, setHasGyroscope] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
   
-  const notes = getNotes (person);
-
   const handleDeviceOrientation = useCallback((event: DeviceOrientationEvent) => {
     if (isSpinning) return;
     
@@ -464,13 +457,6 @@ const HolographicCard = ({ person }: HolographicCardProps) => {
       >
         X.COM/FLOGUO
       </a>
-
-      <div className="absolute inset-0 p-6 text-white">
-        <h2 className="text-xl uppercase font-bold">For {person}</h2>
-        {notes.map((note: string, i: number) => (
-          <p key={i} className="mt-2">{note}</p>
-        ))}
-      </div>
 
       <style jsx global>{`
         @keyframes rgb-shift {
