@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Logo from './Logo';
 import StatueOfLiberty from './StatueOfLiberty';
+import { getNotes } from '../utils/notes';
 
 interface WindowWithDeviceOrientation extends Window {
   DeviceOrientationEvent: {
@@ -10,7 +11,11 @@ interface WindowWithDeviceOrientation extends Window {
   };
 }
 
-const HolographicCard = () => {
+interface HolographicCardProps {
+  person: string;
+}
+
+const HolographicCard = ({ person }: HolographicCardProps) => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
   const [hypotenuse, setHypotenuse] = useState(0);
@@ -19,29 +24,41 @@ const HolographicCard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [audio] = useState(typeof Audio !== 'undefined' ? new Audio('/card-flip.mp3') : null);
   const [hasGyroscope, setHasGyroscope] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(0);
   
+  const notes = getNotes (person);
+
   const handleDeviceOrientation = useCallback((event: DeviceOrientationEvent) => {
     if (isSpinning) return;
+    
+    // Throttle updates to 60fps
+    const now = performance.now();
+    if (now - lastUpdate < 16) return; // 1000ms/60fps ≈ 16ms
+    setLastUpdate(now);
     
     const gamma = event.gamma || 0;
     const beta = event.beta || 0;
     
-    const rotateX = Math.min(Math.max(beta - 50, -45), 45);
-    const rotateY = Math.min(Math.max(gamma * 1.5, -45), 45);
+    // Smooth out the values with smaller multipliers
+    const rotateX = Math.min(Math.max(beta - 50, -30), 30) * 0.8;
+    const rotateY = Math.min(Math.max(gamma, -30), 30) * 0.8;
     
-    const x = ((gamma + 90) / 180) * 100;
-    const y = ((beta + 180) / 360) * 100;
+    // Smoother position calculations
+    const x = 50 + (gamma / 90) * 50;
+    const y = 50 + (beta / 180) * 50;
     
-    const h = Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2));
+    const h = Math.min(Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2)), 1);
     
-    setRotation(prev => ({
-      ...prev,
-      x: rotateX,
-      y: isFlipped ? rotateY + 180 : rotateY
-    }));
-    setMousePosition({ x, y });
-    setHypotenuse(h);
-  }, [isSpinning, isFlipped]);
+    requestAnimationFrame(() => {
+      setRotation(prev => ({
+        ...prev,
+        x: rotateX,
+        y: isFlipped ? rotateY + 180 : rotateY
+      }));
+      setMousePosition({ x, y });
+      setHypotenuse(h);
+    });
+  }, [isSpinning, isFlipped, lastUpdate]);
 
   useEffect(() => {
     // Check if device has gyroscope/accelerometer
@@ -447,6 +464,13 @@ const HolographicCard = () => {
       >
         X.COM/FLOGUO
       </a>
+
+      <div className="absolute inset-0 p-6 text-white">
+        <h2 className="text-xl uppercase font-bold">For {person}</h2>
+        {notes.map((note: string, i: number) => (
+          <p key={i} className="mt-2">{note}</p>
+        ))}
+      </div>
 
       <style jsx global>{`
         @keyframes rgb-shift {
