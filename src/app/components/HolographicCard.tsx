@@ -1,8 +1,14 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Logo from './Logo';
 import StatueOfLiberty from './StatueOfLiberty';
+
+interface WindowWithDeviceOrientation extends Window {
+  DeviceOrientationEvent: {
+    requestPermission?: () => Promise<'granted' | 'denied' | 'default'>;
+  };
+}
 
 const HolographicCard = () => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
@@ -12,7 +18,58 @@ const HolographicCard = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [audio] = useState(typeof Audio !== 'undefined' ? new Audio('/card-flip.mp3') : null);
+  const [hasGyroscope, setHasGyroscope] = useState(false);
   
+  const handleDeviceOrientation = useCallback((event: DeviceOrientationEvent) => {
+    if (isSpinning) return;
+    
+    const gamma = event.gamma || 0;
+    const beta = event.beta || 0;
+    
+    const rotateX = Math.min(Math.max(beta - 50, -45), 45);
+    const rotateY = Math.min(Math.max(gamma * 1.5, -45), 45);
+    
+    const x = ((gamma + 90) / 180) * 100;
+    const y = ((beta + 180) / 360) * 100;
+    
+    const h = Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2));
+    
+    setRotation(prev => ({
+      ...prev,
+      x: rotateX,
+      y: isFlipped ? rotateY + 180 : rotateY
+    }));
+    setMousePosition({ x, y });
+    setHypotenuse(h);
+  }, [isSpinning, isFlipped]);
+
+  useEffect(() => {
+    // Check if device has gyroscope/accelerometer
+    if (typeof window !== 'undefined' && 'DeviceOrientationEvent' in window) {
+      // Request permission for iOS devices
+      if (typeof (window as WindowWithDeviceOrientation).DeviceOrientationEvent?.requestPermission === 'function') {
+        (window as WindowWithDeviceOrientation).DeviceOrientationEvent.requestPermission?.()
+          .then((permissionState) => {
+            if (permissionState === 'granted') {
+              setHasGyroscope(true);
+              window.addEventListener('deviceorientation', handleDeviceOrientation);
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Non-iOS devices
+        setHasGyroscope(true);
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    }
+
+    return () => {
+      if (hasGyroscope) {
+        window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    };
+  }, [hasGyroscope, handleDeviceOrientation]);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isSpinning) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -79,6 +136,14 @@ const HolographicCard = () => {
       z: 0
     }));
   };
+
+  useEffect(() => {
+    return () => {
+      if (hasGyroscope) {
+        window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    };
+  }, [hasGyroscope, handleDeviceOrientation]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen bg-black p-8 relative">
