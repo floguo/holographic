@@ -20,27 +20,36 @@ const HolographicCard = () => {
   const [audio] = useState(typeof Audio !== 'undefined' ? new Audio('/card-flip.mp3') : null);
   const [hasGyroscope, setHasGyroscope] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(0);
+  const [prevRotation, setPrevRotation] = useState({ x: 0, y: 0 });
   
   const handleDeviceOrientation = useCallback((event: DeviceOrientationEvent) => {
     if (isSpinning) return;
     
-    // Throttle updates to 60fps
+    // Throttle updates to 30fps for better stability
     const now = performance.now();
-    if (now - lastUpdate < 16) return; // 1000ms/60fps ≈ 16ms
+    if (now - lastUpdate < 33) return; // 1000ms/30fps ≈ 33ms
     setLastUpdate(now);
     
     const gamma = event.gamma || 0;
     const beta = event.beta || 0;
     
-    // Smooth out the values with smaller multipliers
-    const rotateX = Math.min(Math.max(beta - 50, -30), 30) * 0.8;
-    const rotateY = Math.min(Math.max(gamma, -30), 30) * 0.8;
+    // Smooth out the values with lerping
+    const lerpFactor = 0.15; // Lower = smoother
     
-    // Smoother position calculations
-    const x = 50 + (gamma / 90) * 50;
-    const y = 50 + (beta / 180) * 50;
+    const targetX = Math.min(Math.max(beta - 50, -20), 20);
+    const targetY = Math.min(Math.max(gamma, -20), 20);
     
-    const h = Math.min(Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2)), 1);
+    const rotateX = prevRotation.x + (targetX - prevRotation.x) * lerpFactor;
+    const rotateY = prevRotation.y + (targetY - prevRotation.y) * lerpFactor;
+    
+    // Update previous rotation for next frame
+    setPrevRotation({ x: rotateX, y: rotateY });
+    
+    // Smoother position calculations with reduced range
+    const x = 50 + (gamma / 180) * 40; // Reduced from 50 to 40
+    const y = 50 + (beta / 180) * 40;
+    
+    const h = Math.min(Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2)), 0.8);
     
     requestAnimationFrame(() => {
       setRotation(prev => ({
@@ -51,7 +60,7 @@ const HolographicCard = () => {
       setMousePosition({ x, y });
       setHypotenuse(h);
     });
-  }, [isSpinning, isFlipped, lastUpdate]);
+  }, [isSpinning, isFlipped, lastUpdate, prevRotation]);
 
   useEffect(() => {
     // Check if device has gyroscope/accelerometer
