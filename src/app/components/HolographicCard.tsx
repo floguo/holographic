@@ -92,24 +92,39 @@ const HolographicCard = () => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isSpinning) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
     
-    // Calculate rotation (maximum 45 degrees) - account for flipped state
-    const rotateX = ((e.clientY - rect.top) / rect.height - 0.5) * -45;
-    const rotateY = ((e.clientX - rect.left) / rect.width - 0.5) * 45;
+    // Calculate normalized position (0 to 1)
+    const normalizedX = (e.clientX - rect.left) / rect.width;
+    const normalizedY = (e.clientY - rect.top) / rect.height;
     
-    // Calculate hypotenuse for light effect intensity
-    const h = Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2));
+    // Add buffer zone near edges (5% on each side)
+    const bufferZone = 0.05;
+    const isNearEdge = 
+      normalizedX < bufferZone || 
+      normalizedX > (1 - bufferZone) || 
+      normalizedY < bufferZone || 
+      normalizedY > (1 - bufferZone);
     
-    setMousePosition({ x, y });
-    // Add 180 degrees to Y rotation if card is flipped
-    setRotation(prev => ({ 
-      ...prev, 
-      x: rotateX,
-      y: rotateY + (isFlipped ? 180 : 0)
-    }));
-    setHypotenuse(h);
+    // Calculate percentage position (0 to 100)
+    const x = normalizedX * 100;
+    const y = normalizedY * 100;
+    
+    // Smoother rotation with reduced range near edges
+    const rotateX = ((normalizedY - 0.5) * -45) * (isNearEdge ? 0.5 : 1);
+    const rotateY = ((normalizedX - 0.5) * 45) * (isNearEdge ? 0.5 : 1);
+    
+    // Calculate hypotenuse with damping near edges
+    const h = Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2)) * (isNearEdge ? 0.5 : 1);
+    
+    requestAnimationFrame(() => {
+      setMousePosition({ x, y });
+      setRotation(prev => ({ 
+        ...prev, 
+        x: rotateX,
+        y: rotateY + (isFlipped ? 180 : 0)
+      }));
+      setHypotenuse(h);
+    });
   };
 
   const handleMouseLeave = () => {
