@@ -124,20 +124,7 @@ const HolographicCard = () => {
               backfaceVisibility: 'hidden',
             }}
           >
-            {/* Embossed grid pattern */}
-            <div 
-              className="absolute inset-0 rounded-xl"
-              style={{
-                background: `
-                  linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px),
-                  linear-gradient(0deg, rgba(255,255,255,.03) 1px, transparent 1px)
-                `,
-                backgroundSize: '20px 20px',
-                opacity: 1,
-              }}
-            />
-            
-            {/* Card base */}
+            {/* Front card base */}
             <div 
               className="absolute inset-0 rounded-xl"
               style={{
@@ -145,12 +132,25 @@ const HolographicCard = () => {
                 boxShadow: `
                   inset 0 0 0 1px rgba(255,255,255,0.05),
                   inset 0 0 0 1px rgba(255,255,255,0.025),
-                  0 0 ${20 + hypotenuse * 30}px rgba(255, 255, 255, ${0.02 + hypotenuse * 0.05}),
-                  0 0 ${40 + hypotenuse * 50}px rgba(255, 161, 158, ${0.01 + hypotenuse * 0.05}),
-                  0 0 ${60 + hypotenuse * 70}px rgba(130, 255, 213, ${0.01 + hypotenuse * 0.05}),
-                  0 0 ${80 + hypotenuse * 90}px rgba(148, 241, 255, ${0.01 + hypotenuse * 0.05})`,
-                animation: 'rgb-shift 10s linear infinite',
-                transition: 'box-shadow 3s cubic-bezier(0.23, 1, 0.32, 1)',
+                  0 0 ${30 + hypotenuse * 50}px rgba(255, 161, 158, ${0.03 + hypotenuse * 0.1}),
+                  0 0 ${60 + hypotenuse * 70}px rgba(130, 255, 213, ${0.02 + hypotenuse * 0.08}),
+                  0 0 ${90 + hypotenuse * 90}px rgba(148, 241, 255, ${0.02 + hypotenuse * 0.08}),
+                  0 0 ${120 + hypotenuse * 110}px rgba(255, 48, 255, ${0.02 + hypotenuse * 0.08})`,
+                animation: 'rgb-shift 5s linear infinite',
+                transition: 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)',
+              }}
+            />
+            
+            {/* Embossed grid pattern - moved after base */}
+            <div 
+              className="absolute inset-0 rounded-xl"
+              style={{
+                background: `
+                  linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px),
+                  linear-gradient(0deg, rgba(255,255,255,.05) 1px, transparent 1px)
+                `,
+                backgroundSize: '20px 20px',
+                mixBlendMode: 'overlay',
               }}
             />
             
@@ -209,9 +209,9 @@ const HolographicCard = () => {
               </div>
 
               {/* Statue of Liberty */}
-              <div className="absolute -bottom-32 -right-5">
+              <div className="absolute -bottom-24 -right-5">
                 <StatueOfLiberty 
-                  className="text-white h-[40rem] mix-blend-soft-light opacity-10" 
+                  className="text-white h-[36rem] mix-blend-soft-light opacity-10" 
                   style={{
                     filter: 'drop-shadow(0 0 12px rgba(255,255,255,0.3))',
                   }}
@@ -256,80 +256,100 @@ const HolographicCard = () => {
               backfaceVisibility: 'hidden',
               background: 'linear-gradient(to bottom, #000000, #111111)',
               boxShadow: `
-                inset 0 0 0 1px rgba(255,255,255,0.1),
-                inset 0 0 0 2px rgba(255,255,255,0.05),
-                0 0 ${20 + hypotenuse * 30}px rgba(255, 255, 255, ${0.02 + hypotenuse * 0.05}),
-                0 0 ${40 + hypotenuse * 50}px rgba(255, 161, 158, ${0.01 + hypotenuse * 0.05}),
-                0 0 ${60 + hypotenuse * 70}px rgba(130, 255, 213, ${0.01 + hypotenuse * 0.05}),
-                0 0 ${80 + hypotenuse * 90}px rgba(148, 241, 255, ${0.01 + hypotenuse * 0.05})`,
-                animation: 'rgb-shift 10s linear infinite',
-                transition: 'box-shadow 3s cubic-bezier(0.23, 1, 0.32, 1)',
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                inset 0 0 0 1px rgba(255,255,255,0.025),
+                0 0 ${30 + hypotenuse * 50}px rgba(255, 161, 158, ${0.03 + hypotenuse * 0.1}),
+                0 0 ${60 + hypotenuse * 70}px rgba(130, 255, 213, ${0.02 + hypotenuse * 0.08}),
+                0 0 ${90 + hypotenuse * 90}px rgba(148, 241, 255, ${0.02 + hypotenuse * 0.08}),
+                0 0 ${120 + hypotenuse * 110}px rgba(255, 48, 255, ${0.02 + hypotenuse * 0.08})`,
+              animation: 'rgb-shift 5s linear infinite',
+              transition: 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1)',
+            }}
+          >
+            {/* Subtle tilt lighting effect */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: `radial-gradient(
+                  circle at ${mousePosition.x}% ${mousePosition.y}%,
+                  rgba(255, 255, 255, 0.03) 0%,
+                  transparent 60%
+                )`,
+                mixBlendMode: 'overlay',
+                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
               }}
-            >
-              {/* Radial rays background */}
+            />
+            
+            {/* Radial rays background */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: `repeating-conic-gradient(
+                  from 0deg,
+                  rgba(0, 0, 0, 0) 0deg,
+                  rgba(0, 0, 0, 0) 5deg,
+                  rgba(255, 255, 255, 0.03) 5deg,
+                  rgba(0, 0, 0, 0) 10deg
+                )`,
+                transform: 'scale(2)',
+                transformOrigin: 'center',
+                opacity: 0.2,
+              }}
+            />
+            
+            {/* Color gradient overlay */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(
+                  ${180 + (mousePosition.x - 50) * 2}deg, 
+                  rgba(0, 183, 255, 0.15) ${mousePosition.y * 0.5}%, 
+                  rgba(255, 48, 255, 0.15) ${50 + (mousePosition.y - 50) * 0.5}%, 
+                  rgba(255, 198, 0, 0.15) ${100 - mousePosition.y * 0.5}%
+                )`,
+                mixBlendMode: 'overlay',
+                transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
+              }}
+            />
+            
+            {/* Vercel triangle */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {/* Vercel triangle - equilateral */}
               <div 
-                className="absolute inset-0"
+                className="w-24 h-24 relative hover:scale-110 transition-transform duration-700"
                 style={{
-                  background: `repeating-conic-gradient(
-                    from 0deg,
-                    rgba(0, 0, 0, 0) 0deg,
-                    rgba(0, 0, 0, 0) 5deg,
-                    rgba(255, 255, 255, 0.03) 5deg,
-                    rgba(0, 0, 0, 0) 10deg
-                  )`,
-                  transform: 'scale(2)',
-                  transformOrigin: 'center',
-                  opacity: 0.2,
+                  filter: 'drop-shadow(0 0 20px rgba(255,255,255,0.2))',
                 }}
-              />
-              
-              {/* Color gradient overlay */}
-              <div 
-                className="absolute inset-0"
-                style={{
-                  background: 'linear-gradient(120deg, rgba(0, 183, 255, 0.15), rgba(255, 48, 255, 0.15), rgba(255, 198, 0, 0.15))',
-                  mixBlendMode: 'overlay',
-                }}
-              />
-              
-              {/* Vercel triangle */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                {/* Vercel triangle - equilateral */}
-                <div 
-                  className="w-24 h-24 relative hover:scale-110 transition-transform duration-700"
+              >
+                <div
+                  className="absolute inset-0"
                   style={{
-                    filter: 'drop-shadow(0 0 20px rgba(255,255,255,0.2))',
+                    background: 'linear-gradient(45deg, #fff, #f5f5f5)',
+                    clipPath: 'polygon(50% 0%, 100% 86.6%, 0% 86.6%)',
                   }}
-                >
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: 'linear-gradient(45deg, #fff, #f5f5f5)',
-                      clipPath: 'polygon(50% 0%, 100% 86.6%, 0% 86.6%)',
-                    }}
-                  />
-                </div>
+                />
               </div>
+            </div>
 
-              {/* Ambient glow */}
-              <div 
-                className="absolute inset-0 rounded-xl"
-                style={{
-                  background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
-                  mixBlendMode: 'overlay',
-                  animation: 'pulse 4s ease-in-out infinite',
-                }}
-              />
+            {/* Ambient glow */}
+            <div 
+              className="absolute inset-0 rounded-xl"
+              style={{
+                background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%)',
+                mixBlendMode: 'overlay',
+                animation: 'pulse 4s ease-in-out infinite',
+              }}
+            />
 
-              {/* Floating particles */}
-              <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float1" style={{ left: '10%', top: '20%' }} />
-                <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float2" style={{ left: '70%', top: '50%' }} />
-                <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float3" style={{ left: '40%', top: '80%' }} />
-              </div>
+            {/* Floating particles */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float1" style={{ left: '10%', top: '20%' }} />
+              <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float2" style={{ left: '70%', top: '50%' }} />
+              <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float3" style={{ left: '40%', top: '80%' }} />
             </div>
           </div>
         </div>
+      </div>
 
       {/* X link - sticky footer */}
       <a 
