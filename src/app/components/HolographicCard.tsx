@@ -135,7 +135,12 @@ const HolographicCard = () => {
               style={{
                 background: 'linear-gradient(45deg, #000000, #1a1a1a)',
                 boxShadow: `0 0 40px rgba(192, 219, 255, 0.2),
-                     0 0 ${20 + hypotenuse * 30}px rgba(120, 219, 255, ${0.1 + hypotenuse * 0.2})`,
+                    0 0 ${20 + hypotenuse * 30}px rgba(255, 255, 255, ${0.02 + hypotenuse * 0.05}),
+                    0 0 ${40 + hypotenuse * 50}px rgba(255, 161, 158, ${0.01 + hypotenuse * 0.05}),
+                    0 0 ${60 + hypotenuse * 70}px rgba(130, 255, 213, ${0.01 + hypotenuse * 0.05}),
+                    0 0 ${80 + hypotenuse * 90}px rgba(148, 241, 255, ${0.01 + hypotenuse * 0.05})`,
+                animation: 'rgb-shift 10s linear infinite',
+                transition: 'box-shadow 3s cubic-bezier(0.23, 1, 0.32, 1)',
               }}
             />
             
@@ -158,7 +163,8 @@ const HolographicCard = () => {
                 backgroundPosition: `${mousePosition.x}% ${mousePosition.y}%`,
                 opacity: Math.max(0.1, (1 - hypotenuse) * 0.5),
                 mixBlendMode: 'color-dodge',
-                transition: 'background-position 1.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1)'
+                transition: 'all 2s cubic-bezier(0.23, 1, 0.32, 1)',
+                animation: 'rgb-shift 8s linear infinite',
               }}
             />
             
@@ -177,10 +183,10 @@ const HolographicCard = () => {
                     transparent 50%
                   )
                 `,
-                opacity: isHovered ? Math.max(0.2, (1 - hypotenuse) * 0.4) : 0,
+                opacity: isHovered ? Math.max(0.15, (1 - hypotenuse) * 0.3) : 0,
                 mixBlendMode: 'plus-lighter',
                 filter: 'blur(8px) brightness(1.5)',
-                transition: 'opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1)'
+                transition: 'all 2s cubic-bezier(0.23, 1, 0.32, 1)'
               }}
             />
 
@@ -218,7 +224,12 @@ const HolographicCard = () => {
               backfaceVisibility: 'hidden',
               background: 'linear-gradient(to bottom, #000000, #111111)',
               boxShadow: `0 0 40px rgba(192, 219, 255, 0.2),
-                         0 0 ${20 + hypotenuse * 30}px rgba(120, 219, 255, ${0.1 + hypotenuse * 0.2})`,
+                    0 0 ${20 + hypotenuse * 30}px rgba(255, 255, 255, ${0.02 + hypotenuse * 0.05}),
+                    0 0 ${40 + hypotenuse * 50}px rgba(255, 161, 158, ${0.01 + hypotenuse * 0.05}),
+                    0 0 ${60 + hypotenuse * 70}px rgba(130, 255, 213, ${0.01 + hypotenuse * 0.05}),
+                    0 0 ${80 + hypotenuse * 90}px rgba(148, 241, 255, ${0.01 + hypotenuse * 0.05})`,
+              animation: 'rgb-shift 10s linear infinite',
+              transition: 'box-shadow 3s cubic-bezier(0.23, 1, 0.32, 1)',
             }}
           >
             {/* Radial rays background */}
@@ -268,6 +279,16 @@ const HolographicCard = () => {
           </div>
         </div>
       </div>
+      <style jsx global>{`
+        @keyframes rgb-shift {
+          0% {
+            filter: hue-rotate(0deg);
+          }
+          100% {
+            filter: hue-rotate(360deg);
+          }
+        }
+      `}</style>
     </div>
   );
 };
