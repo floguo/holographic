@@ -11,8 +11,8 @@ const StatueOfLiberty: React.FC<StatueOfLibertyProps> = ({ className, style }) =
     <Image 
       src="/statue-of-liberty.svg" 
       alt="Statue of Liberty"
-      width={160}
-      height={300}
+      width={200}
+      height={400}
       className={className}
       style={style}
     />
