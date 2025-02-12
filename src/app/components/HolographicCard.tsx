@@ -97,33 +97,25 @@ const HolographicCard = () => {
     const normalizedX = (e.clientX - rect.left) / rect.width;
     const normalizedY = (e.clientY - rect.top) / rect.height;
     
-    // Add buffer zone near edges (5% on each side)
-    const bufferZone = 0.05;
-    const isNearEdge = 
-      normalizedX < bufferZone || 
-      normalizedX > (1 - bufferZone) || 
-      normalizedY < bufferZone || 
-      normalizedY > (1 - bufferZone);
-    
     // Calculate percentage position (0 to 100)
     const x = normalizedX * 100;
     const y = normalizedY * 100;
     
-    // Smoother rotation with reduced range near edges
-    const rotateX = ((normalizedY - 0.5) * -45) * (isNearEdge ? 0.5 : 1);
-    const rotateY = ((normalizedX - 0.5) * 45) * (isNearEdge ? 0.5 : 1);
+    // Smoother rotation with spring-like motion
+    const rotateX = ((normalizedY - 0.5) * -30); // Reduced from 45 to 30 degrees
+    const rotateY = ((normalizedX - 0.5) * 30);
     
-    // Calculate hypotenuse with damping near edges
-    const h = Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2)) * (isNearEdge ? 0.5 : 1);
+    // Smooth hypotenuse calculation
+    const h = Math.min(Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2)), 0.8);
     
     requestAnimationFrame(() => {
       setMousePosition({ x, y });
       setRotation(prev => ({ 
         ...prev, 
-        x: rotateX,
-        y: rotateY + (isFlipped ? 180 : 0)
+        x: prev.x + (rotateX - prev.x) * 0.1, // Spring effect
+        y: prev.y + (rotateY - prev.y + (isFlipped ? 180 : 0) - prev.y) * 0.1
       }));
-      setHypotenuse(h);
+      setHypotenuse(prev => prev + (h - prev) * 0.1);
     });
   };
 
@@ -202,7 +194,7 @@ const HolographicCard = () => {
             `,
             transition: isSpinning 
               ? 'transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1.5)'
-              : 'transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1.2)', // Same transition for both flip and tilt
+              : 'transform 0.05s cubic-bezier(0.23, 1, 0.32, 1)', // Faster transition for tilt
           }}
         >
           {/* Card depth/thickness */}
