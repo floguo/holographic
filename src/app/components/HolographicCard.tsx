@@ -141,16 +141,17 @@ const HolographicCard = () => {
               }}
             />
             
-            {/* Embossed grid pattern - moved after base */}
+            {/* Embossed grid pattern */}
             <div 
               className="absolute inset-0 rounded-xl"
               style={{
-                background: `
-                  linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px),
-                  linear-gradient(0deg, rgba(255,255,255,.05) 1px, transparent 1px)
+                backgroundImage: `
+                  linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px),
+                  linear-gradient(0deg, rgba(255,255,255,0.08) 1px, transparent 1px)
                 `,
-                backgroundSize: '20px 20px',
+                backgroundSize: '40px 40px',
                 mixBlendMode: 'overlay',
+                pointerEvents: 'none',
               }}
             />
             
@@ -209,9 +210,9 @@ const HolographicCard = () => {
               </div>
 
               {/* Statue of Liberty */}
-              <div className="absolute -bottom-24 -right-5">
+              <div className="absolute -bottom-[8rem] -right-5">
                 <StatueOfLiberty 
-                  className="text-white h-[36rem] mix-blend-soft-light opacity-10" 
+                  className="text-white h-[40rem] mix-blend-soft-light opacity-10" 
                   style={{
                     filter: 'drop-shadow(0 0 12px rgba(255,255,255,0.3))',
                   }}
@@ -342,10 +343,31 @@ const HolographicCard = () => {
             />
 
             {/* Floating particles */}
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float1" style={{ left: '10%', top: '20%' }} />
-              <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float2" style={{ left: '70%', top: '50%' }} />
-              <div className="absolute w-1 h-1 bg-white rounded-full opacity-20 animate-float3" style={{ left: '40%', top: '80%' }} />
+            <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 10 }}>
+              <div 
+                className="absolute w-1 h-1 bg-white rounded-full opacity-40 animate-float1" 
+                style={{ 
+                  left: '10%', 
+                  top: '20%',
+                  filter: 'blur(0.5px)',
+                }} 
+              />
+              <div 
+                className="absolute w-1 h-1 bg-white rounded-full opacity-40 animate-float2" 
+                style={{ 
+                  left: '70%', 
+                  top: '50%',
+                  filter: 'blur(0.5px)',
+                }} 
+              />
+              <div 
+                className="absolute w-1 h-1 bg-white rounded-full opacity-40 animate-float3" 
+                style={{ 
+                  left: '40%', 
+                  top: '80%',
+                  filter: 'blur(0.5px)',
+                }} 
+              />
             </div>
           </div>
         </div>
