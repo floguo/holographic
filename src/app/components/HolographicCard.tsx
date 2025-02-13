@@ -16,31 +16,24 @@ const HolographicCard = () => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isSpinning) return;
     const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
     
-    // Calculate normalized position (0 to 1)
-    const normalizedX = (e.clientX - rect.left) / rect.width;
-    const normalizedY = (e.clientY - rect.top) / rect.height;
+    // Calculate rotation (maximum 45 degrees) - account for flipped state
+    const rotateX = ((e.clientY - rect.top) / rect.height - 0.5) * -45;
+    const rotateY = ((e.clientX - rect.left) / rect.width - 0.5) * 45;
     
-    // Calculate percentage position (0 to 100)
-    const x = normalizedX * 100;
-    const y = normalizedY * 100;
+    // Calculate hypotenuse for light effect intensity
+    const h = Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2));
     
-    // Smoother rotation with spring-like motion
-    const rotateX = ((normalizedY - 0.5) * -30); // Reduced from 45 to 30 degrees
-    const rotateY = ((normalizedX - 0.5) * 30);
-    
-    // Smooth hypotenuse calculation
-    const h = Math.min(Math.sqrt(Math.pow((x - 50) / 50, 2) + Math.pow((y - 50) / 50, 2)), 0.8);
-    
-    requestAnimationFrame(() => {
-      setMousePosition({ x, y });
-      setRotation(prev => ({ 
-        ...prev, 
-        x: prev.x + (rotateX - prev.x) * 0.1, // Spring effect
-        y: prev.y + (rotateY - prev.y + (isFlipped ? 180 : 0) - prev.y) * 0.1
-      }));
-      setHypotenuse(prev => prev + (h - prev) * 0.1);
-    });
+    setMousePosition({ x, y });
+    // Add 180 degrees to Y rotation if card is flipped
+    setRotation(prev => ({ 
+      ...prev, 
+      x: rotateX,
+      y: rotateY + (isFlipped ? 180 : 0)
+    }));
+    setHypotenuse(h);
   };
 
   const handleMouseLeave = () => {
@@ -110,7 +103,7 @@ const HolographicCard = () => {
             `,
             transition: isSpinning 
               ? 'transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1.5)'
-              : 'transform 0.05s cubic-bezier(0.23, 1, 0.32, 1)', // Faster transition for tilt
+              : 'transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1.2)', // Same transition for both flip and tilt
           }}
         >
           {/* Card depth/thickness */}
