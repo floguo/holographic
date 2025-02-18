@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "floguo × hologram",
-  description: "incoming at vercel design",
+  title: "holo card",
+  description: "summer 2025 intern",
 };
 
 export default function RootLayout({
