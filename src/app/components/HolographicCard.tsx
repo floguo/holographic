@@ -374,14 +374,25 @@ const HolographicCard = () => {
       </div>
 
       {/* X link - sticky footer */}
-      <a 
-        href="https://x.com/floguo" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="fixed bottom-4 text-white opacity-30 font-mono font-semibold uppercase tracking-wider text-[0.5rem] hover:opacity-50 transition-opacity duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
-      >
-        X.COM/FLOGUO
-      </a>
+      <div className="fixed bottom-4 space-x-3 flex flex-row justify-center items-center text-white font-mono font-semibold uppercase tracking-wider text-[0.5rem]">
+        <a 
+          href="https://x.com/floguo" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="opacity-30 hover:opacity-50 transition-opacity duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+        >
+          X.COM/FLOGUO
+        </a>
+        <p className="opacity-30">|</p>
+        <a 
+          href="https://github.com/floguo/holographic" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="opacity-30 hover:opacity-50 transition-opacity duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+        >
+          GITHUB REPO
+        </a>
+      </div>
 
       <style jsx global>{`
         @keyframes rgb-shift {
